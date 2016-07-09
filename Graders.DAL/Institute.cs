@@ -12,25 +12,20 @@ namespace Graders.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Customer
+    public partial class Institute
     {
-        public Customer()
+        public Institute()
         {
+            this.InsCourseLocationMapping = new HashSet<InsCourseLocationMapping>();
             this.InstituteReview = new HashSet<InstituteReview>();
+            this.MultipleLocation = new HashSet<MultipleLocation>();
         }
     
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string AdminComment { get; set; }
-        public bool HasShoppingCartItems { get; set; }
-        public string LastIpAddress { get; set; }
-        public System.DateTime CreatedOnUtc { get; set; }
-        public Nullable<System.DateTime> LastLoginDateUtc { get; set; }
-        public System.DateTime LastActivityDateUtc { get; set; }
-        public Nullable<int> RoleId { get; set; }
+        public int InstituteId { get; set; }
+        public string name { get; set; }
     
-        public virtual CustomerRole CustomerRole { get; set; }
+        public virtual ICollection<InsCourseLocationMapping> InsCourseLocationMapping { get; set; }
         public virtual ICollection<InstituteReview> InstituteReview { get; set; }
+        public virtual ICollection<MultipleLocation> MultipleLocation { get; set; }
     }
 }

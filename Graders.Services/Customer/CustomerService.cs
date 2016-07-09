@@ -34,7 +34,10 @@ namespace Graders.Services
            
             //only registered can login
            
-            string pwd=customer.Password;
+            
+
+            string pwd = EncryptText(password);
+            
             //switch (customer.PasswordFormat)
             //{
             //    case PasswordFormat.Encrypted:
@@ -60,8 +63,15 @@ namespace Graders.Services
 
        public DtoCustomer GetCustomerByUsername(string username)
         {
-            var customer = _customerManager.GetCustomerByUsername(username);
-            return new DtoCustomer { UserName = "harveebn", Password = "hyep", RememberMe = true };
+            Customer customer = _customerManager.GetCustomerByUsername(username);
+           //using(var cust= new EntityRepositoryBase<Customer>())
+           //{
+
+           //}
+            if (customer != null)
+                return new DtoCustomer { UserName = customer.Username, Password = customer.Password, RememberMe = true };
+            else
+                return null;
         }
 
 
@@ -166,8 +176,15 @@ namespace Graders.Services
                 return plainText;
 
             if (String.IsNullOrEmpty(encryptionPrivateKey))
-                encryptionPrivateKey =  CommonHelper.GenerateRandomDigitCode(16);
-
+            {
+               if(!string.IsNullOrEmpty(CommonHelper.EncryptionKey))
+                   encryptionPrivateKey = CommonHelper.EncryptionKey;
+               else
+               {
+                   encryptionPrivateKey=_customerManager.GetEncryptionKey();
+                   CommonHelper.EncryptionKey = encryptionPrivateKey;
+               }
+            }
             var tDESalg = new TripleDESCryptoServiceProvider();
             tDESalg.Key = new ASCIIEncoding().GetBytes(encryptionPrivateKey.Substring(0, 16));
             tDESalg.IV = new ASCIIEncoding().GetBytes(encryptionPrivateKey.Substring(8, 8));
@@ -190,6 +207,22 @@ namespace Graders.Services
                 return ms.ToArray();
             }
         }
+
+        //public virtual string DecryptText(string cipherText, string encryptionPrivateKey = "")
+        //{
+        //    if (String.IsNullOrEmpty(cipherText))
+        //        return cipherText;
+
+        //    if (String.IsNullOrEmpty(encryptionPrivateKey))
+        //        encryptionPrivateKey = CommonHelper.GenerateRandomDigitCode(16);
+
+        //    var tDESalg = new TripleDESCryptoServiceProvider();
+        //    tDESalg.Key = new ASCIIEncoding().GetBytes(encryptionPrivateKey.Substring(0, 16));
+        //    tDESalg.IV = new ASCIIEncoding().GetBytes(encryptionPrivateKey.Substring(8, 8));
+
+        //    byte[] buffer = Convert.FromBase64String(cipherText);
+        //    return DecryptTextFromMemory(buffer, tDESalg.Key, tDESalg.IV);
+        //}
        public void Dispose()
        {
            

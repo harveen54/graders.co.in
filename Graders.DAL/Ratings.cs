@@ -12,25 +12,16 @@ namespace Graders.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Customer
+    public partial class Ratings
     {
-        public Customer()
+        public Ratings()
         {
             this.InstituteReview = new HashSet<InstituteReview>();
         }
     
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string AdminComment { get; set; }
-        public bool HasShoppingCartItems { get; set; }
-        public string LastIpAddress { get; set; }
-        public System.DateTime CreatedOnUtc { get; set; }
-        public Nullable<System.DateTime> LastLoginDateUtc { get; set; }
-        public System.DateTime LastActivityDateUtc { get; set; }
-        public Nullable<int> RoleId { get; set; }
+        public int RatingId { get; set; }
+        public string RatingName { get; set; }
     
-        public virtual CustomerRole CustomerRole { get; set; }
         public virtual ICollection<InstituteReview> InstituteReview { get; set; }
     }
 }

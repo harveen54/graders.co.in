@@ -10,7 +10,7 @@
             @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+          </ul>
     }
 }
 else
@@ -18,5 +18,37 @@ else
     <ul class="nav navbar-nav navbar-right">
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+         </ul>
 }
+
+@*<script>
+function myfunction() {
+                $('#myModal').modal('show');
+
+            };
+</script>
+
+<div style="color: black;" class="modal fade" id="myModal" role="dialog">
+
+    <div class="modal-dialog">
+
+       
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 style="background-color: black; color: white;" class="text-center">Please Help To Save 3 Lives</h2>
+                <h4 class="modal-title text-center">
+                    We have observed that you have not entered the details in system yet. Please Help Us, provide your information.
+                </h4>
+            </div>
+            <div class="modal-body">
+            @Html.Partial("Login")
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>*@

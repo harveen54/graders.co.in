@@ -1,0 +1,611 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GradersModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseName" Type="nvarchar" MaxLength="1000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="AdminComment" Type="nvarchar(max)" />
+          <Property Name="HasShoppingCartItems" Type="bit" Nullable="false" />
+          <Property Name="LastIpAddress" Type="nvarchar(max)" />
+          <Property Name="CreatedOnUtc" Type="datetime" Nullable="false" />
+          <Property Name="LastLoginDateUtc" Type="datetime" />
+          <Property Name="LastActivityDateUtc" Type="datetime" Nullable="false" />
+          <Property Name="RoleId" Type="int" />
+        </EntityType>
+        <EntityType Name="CustomerRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InsCourseLocationMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InstituteId" Type="int" />
+          <Property Name="CourseId" Type="int" />
+          <Property Name="LocationId" Type="int" />
+        </EntityType>
+        <EntityType Name="Institute">
+          <Key>
+            <PropertyRef Name="InstituteId" />
+          </Key>
+          <Property Name="InstituteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InstituteReview">
+          <Key>
+            <PropertyRef Name="ReviewId" />
+          </Key>
+          <Property Name="ReviewId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InstituteId" Type="int" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="Review" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Rating" Type="int" />
+          <Property Name="DateOfReview" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationName" Type="nvarchar" MaxLength="1000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MultipleLocation">
+          <Key>
+            <PropertyRef Name="MLocationId" />
+          </Key>
+          <Property Name="MLocationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InstituteId" Type="int" />
+          <Property Name="FullAddress" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PhoneNo" Type="int" Nullable="false" />
+          <Property Name="Website" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Ratings">
+          <Key>
+            <PropertyRef Name="RatingId" />
+          </Key>
+          <Property Name="RatingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RatingName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Setting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <Association Name="FK__Customer__RoleId__182C9B23">
+          <End Role="CustomerRole" Type="Self.CustomerRole" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__InsCourse__Cours__24927208">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="InsCourseLocationMapping" Type="Self.InsCourseLocationMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="InsCourseLocationMapping">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__InsCourse__Insti__239E4DCF">
+          <End Role="Institute" Type="Self.Institute" Multiplicity="0..1" />
+          <End Role="InsCourseLocationMapping" Type="Self.InsCourseLocationMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institute">
+              <PropertyRef Name="InstituteId" />
+            </Principal>
+            <Dependent Role="InsCourseLocationMapping">
+              <PropertyRef Name="InstituteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__InsCourse__Locat__25869641">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="InsCourseLocationMapping" Type="Self.InsCourseLocationMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="InsCourseLocationMapping">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Institute__Custo__2B3F6F97">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="InstituteReview" Type="Self.InstituteReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InstituteReview">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Institute__Insti__2A4B4B5E">
+          <End Role="Institute" Type="Self.Institute" Multiplicity="0..1" />
+          <End Role="InstituteReview" Type="Self.InstituteReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institute">
+              <PropertyRef Name="InstituteId" />
+            </Principal>
+            <Dependent Role="InstituteReview">
+              <PropertyRef Name="InstituteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Institute__Ratin__2C3393D0">
+          <End Role="Ratings" Type="Self.Ratings" Multiplicity="0..1" />
+          <End Role="InstituteReview" Type="Self.InstituteReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ratings">
+              <PropertyRef Name="RatingId" />
+            </Principal>
+            <Dependent Role="InstituteReview">
+              <PropertyRef Name="Rating" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MultipleL__Insti__1ED998B2">
+          <End Role="Institute" Type="Self.Institute" Multiplicity="0..1" />
+          <End Role="MultipleLocation" Type="Self.MultipleLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institute">
+              <PropertyRef Name="InstituteId" />
+            </Principal>
+            <Dependent Role="MultipleLocation">
+              <PropertyRef Name="InstituteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GradersModelStoreContainer">
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerRole" EntityType="Self.CustomerRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InsCourseLocationMapping" EntityType="Self.InsCourseLocationMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Institute" EntityType="Self.Institute" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InstituteReview" EntityType="Self.InstituteReview" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MultipleLocation" EntityType="Self.MultipleLocation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Setting" EntityType="Self.Setting" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Customer__RoleId__182C9B23" Association="Self.FK__Customer__RoleId__182C9B23">
+            <End Role="CustomerRole" EntitySet="CustomerRole" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__InsCourse__Cours__24927208" Association="Self.FK__InsCourse__Cours__24927208">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="InsCourseLocationMapping" EntitySet="InsCourseLocationMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK__InsCourse__Insti__239E4DCF" Association="Self.FK__InsCourse__Insti__239E4DCF">
+            <End Role="Institute" EntitySet="Institute" />
+            <End Role="InsCourseLocationMapping" EntitySet="InsCourseLocationMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK__InsCourse__Locat__25869641" Association="Self.FK__InsCourse__Locat__25869641">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="InsCourseLocationMapping" EntitySet="InsCourseLocationMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Institute__Custo__2B3F6F97" Association="Self.FK__Institute__Custo__2B3F6F97">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="InstituteReview" EntitySet="InstituteReview" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Institute__Insti__2A4B4B5E" Association="Self.FK__Institute__Insti__2A4B4B5E">
+            <End Role="Institute" EntitySet="Institute" />
+            <End Role="InstituteReview" EntitySet="InstituteReview" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Institute__Ratin__2C3393D0" Association="Self.FK__Institute__Ratin__2C3393D0">
+            <End Role="Ratings" EntitySet="Ratings" />
+            <End Role="InstituteReview" EntitySet="InstituteReview" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MultipleL__Insti__1ED998B2" Association="Self.FK__MultipleL__Insti__1ED998B2">
+            <End Role="Institute" EntitySet="Institute" />
+            <End Role="MultipleLocation" EntitySet="MultipleLocation" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GradersModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="InsCourseLocationMapping" Relationship="Self.FK__InsCourse__Cours__24927208" FromRole="Course" ToRole="InsCourseLocationMapping" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AdminComment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HasShoppingCartItems" Type="Boolean" Nullable="false" />
+          <Property Name="LastIpAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOnUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastLoginDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LastActivityDateUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RoleId" Type="Int32" />
+          <NavigationProperty Name="CustomerRole" Relationship="Self.FK__Customer__RoleId__182C9B23" FromRole="Customer" ToRole="CustomerRole" />
+          <NavigationProperty Name="InstituteReview" Relationship="Self.FK__Institute__Custo__2B3F6F97" FromRole="Customer" ToRole="InstituteReview" />
+        </EntityType>
+        <EntityType Name="CustomerRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Customer__RoleId__182C9B23" FromRole="CustomerRole" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="InsCourseLocationMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InstituteId" Type="Int32" />
+          <Property Name="CourseId" Type="Int32" />
+          <Property Name="LocationId" Type="Int32" />
+          <NavigationProperty Name="Course" Relationship="Self.FK__InsCourse__Cours__24927208" FromRole="InsCourseLocationMapping" ToRole="Course" />
+          <NavigationProperty Name="Institute" Relationship="Self.FK__InsCourse__Insti__239E4DCF" FromRole="InsCourseLocationMapping" ToRole="Institute" />
+          <NavigationProperty Name="Location" Relationship="Self.FK__InsCourse__Locat__25869641" FromRole="InsCourseLocationMapping" ToRole="Location" />
+        </EntityType>
+        <EntityType Name="Institute">
+          <Key>
+            <PropertyRef Name="InstituteId" />
+          </Key>
+          <Property Name="InstituteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="InsCourseLocationMapping" Relationship="Self.FK__InsCourse__Insti__239E4DCF" FromRole="Institute" ToRole="InsCourseLocationMapping" />
+          <NavigationProperty Name="InstituteReview" Relationship="Self.FK__Institute__Insti__2A4B4B5E" FromRole="Institute" ToRole="InstituteReview" />
+          <NavigationProperty Name="MultipleLocation" Relationship="Self.FK__MultipleL__Insti__1ED998B2" FromRole="Institute" ToRole="MultipleLocation" />
+        </EntityType>
+        <EntityType Name="InstituteReview">
+          <Key>
+            <PropertyRef Name="ReviewId" />
+          </Key>
+          <Property Name="ReviewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InstituteId" Type="Int32" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="Review" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Rating" Type="Int32" />
+          <Property Name="DateOfReview" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Institute__Custo__2B3F6F97" FromRole="InstituteReview" ToRole="Customer" />
+          <NavigationProperty Name="Institute" Relationship="Self.FK__Institute__Insti__2A4B4B5E" FromRole="InstituteReview" ToRole="Institute" />
+          <NavigationProperty Name="Ratings" Relationship="Self.FK__Institute__Ratin__2C3393D0" FromRole="InstituteReview" ToRole="Ratings" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="InsCourseLocationMapping" Relationship="Self.FK__InsCourse__Locat__25869641" FromRole="Location" ToRole="InsCourseLocationMapping" />
+        </EntityType>
+        <EntityType Name="MultipleLocation">
+          <Key>
+            <PropertyRef Name="MLocationId" />
+          </Key>
+          <Property Name="MLocationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InstituteId" Type="Int32" />
+          <Property Name="FullAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhoneNo" Type="Int32" Nullable="false" />
+          <Property Name="Website" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Institute" Relationship="Self.FK__MultipleL__Insti__1ED998B2" FromRole="MultipleLocation" ToRole="Institute" />
+        </EntityType>
+        <EntityType Name="Ratings">
+          <Key>
+            <PropertyRef Name="RatingId" />
+          </Key>
+          <Property Name="RatingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RatingName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="InstituteReview" Relationship="Self.FK__Institute__Ratin__2C3393D0" FromRole="Ratings" ToRole="InstituteReview" />
+        </EntityType>
+        <Association Name="FK__InsCourse__Cours__24927208">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="InsCourseLocationMapping" Type="Self.InsCourseLocationMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="InsCourseLocationMapping">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer__RoleId__182C9B23">
+          <End Role="CustomerRole" Type="Self.CustomerRole" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Institute__Custo__2B3F6F97">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="InstituteReview" Type="Self.InstituteReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InstituteReview">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__InsCourse__Insti__239E4DCF">
+          <End Role="Institute" Type="Self.Institute" Multiplicity="0..1" />
+          <End Role="InsCourseLocationMapping" Type="Self.InsCourseLocationMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institute">
+              <PropertyRef Name="InstituteId" />
+            </Principal>
+            <Dependent Role="InsCourseLocationMapping">
+              <PropertyRef Name="InstituteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__InsCourse__Locat__25869641">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="InsCourseLocationMapping" Type="Self.InsCourseLocationMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="InsCourseLocationMapping">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Institute__Insti__2A4B4B5E">
+          <End Role="Institute" Type="Self.Institute" Multiplicity="0..1" />
+          <End Role="InstituteReview" Type="Self.InstituteReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institute">
+              <PropertyRef Name="InstituteId" />
+            </Principal>
+            <Dependent Role="InstituteReview">
+              <PropertyRef Name="InstituteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MultipleL__Insti__1ED998B2">
+          <End Role="Institute" Type="Self.Institute" Multiplicity="0..1" />
+          <End Role="MultipleLocation" Type="Self.MultipleLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institute">
+              <PropertyRef Name="InstituteId" />
+            </Principal>
+            <Dependent Role="MultipleLocation">
+              <PropertyRef Name="InstituteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Institute__Ratin__2C3393D0">
+          <End Role="Ratings" Type="Self.Ratings" Multiplicity="0..1" />
+          <End Role="InstituteReview" Type="Self.InstituteReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ratings">
+              <PropertyRef Name="RatingId" />
+            </Principal>
+            <Dependent Role="InstituteReview">
+              <PropertyRef Name="Rating" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GradersEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Course" EntityType="Self.Course" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" />
+          <EntitySet Name="CustomerRole" EntityType="Self.CustomerRole" />
+          <EntitySet Name="InsCourseLocationMapping" EntityType="Self.InsCourseLocationMapping" />
+          <EntitySet Name="Institute" EntityType="Self.Institute" />
+          <EntitySet Name="InstituteReview" EntityType="Self.InstituteReview" />
+          <EntitySet Name="Location" EntityType="Self.Location" />
+          <EntitySet Name="MultipleLocation" EntityType="Self.MultipleLocation" />
+          <EntitySet Name="Ratings" EntityType="Self.Ratings" />
+          <AssociationSet Name="FK__InsCourse__Cours__24927208" Association="Self.FK__InsCourse__Cours__24927208">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="InsCourseLocationMapping" EntitySet="InsCourseLocationMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer__RoleId__182C9B23" Association="Self.FK__Customer__RoleId__182C9B23">
+            <End Role="CustomerRole" EntitySet="CustomerRole" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Institute__Custo__2B3F6F97" Association="Self.FK__Institute__Custo__2B3F6F97">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="InstituteReview" EntitySet="InstituteReview" />
+          </AssociationSet>
+          <AssociationSet Name="FK__InsCourse__Insti__239E4DCF" Association="Self.FK__InsCourse__Insti__239E4DCF">
+            <End Role="Institute" EntitySet="Institute" />
+            <End Role="InsCourseLocationMapping" EntitySet="InsCourseLocationMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK__InsCourse__Locat__25869641" Association="Self.FK__InsCourse__Locat__25869641">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="InsCourseLocationMapping" EntitySet="InsCourseLocationMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Institute__Insti__2A4B4B5E" Association="Self.FK__Institute__Insti__2A4B4B5E">
+            <End Role="Institute" EntitySet="Institute" />
+            <End Role="InstituteReview" EntitySet="InstituteReview" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MultipleL__Insti__1ED998B2" Association="Self.FK__MultipleL__Insti__1ED998B2">
+            <End Role="Institute" EntitySet="Institute" />
+            <End Role="MultipleLocation" EntitySet="MultipleLocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Institute__Ratin__2C3393D0" Association="Self.FK__Institute__Ratin__2C3393D0">
+            <End Role="Ratings" EntitySet="Ratings" />
+            <End Role="InstituteReview" EntitySet="InstituteReview" />
+          </AssociationSet>
+          <EntitySet Name="Setting" EntityType="GradersModel.Setting" />
+        </EntityContainer>
+        <EntityType Name="Setting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GradersModelStoreContainer" CdmEntityContainer="GradersEntities">
+          <EntitySetMapping Name="Course">
+            <EntityTypeMapping TypeName="GradersModel.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customer">
+            <EntityTypeMapping TypeName="GradersModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="AdminComment" ColumnName="AdminComment" />
+                <ScalarProperty Name="HasShoppingCartItems" ColumnName="HasShoppingCartItems" />
+                <ScalarProperty Name="LastIpAddress" ColumnName="LastIpAddress" />
+                <ScalarProperty Name="CreatedOnUtc" ColumnName="CreatedOnUtc" />
+                <ScalarProperty Name="LastLoginDateUtc" ColumnName="LastLoginDateUtc" />
+                <ScalarProperty Name="LastActivityDateUtc" ColumnName="LastActivityDateUtc" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerRole">
+            <EntityTypeMapping TypeName="GradersModel.CustomerRole">
+              <MappingFragment StoreEntitySet="CustomerRole">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InsCourseLocationMapping">
+            <EntityTypeMapping TypeName="GradersModel.InsCourseLocationMapping">
+              <MappingFragment StoreEntitySet="InsCourseLocationMapping">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="InstituteId" ColumnName="InstituteId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Institute">
+            <EntityTypeMapping TypeName="GradersModel.Institute">
+              <MappingFragment StoreEntitySet="Institute">
+                <ScalarProperty Name="InstituteId" ColumnName="InstituteId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InstituteReview">
+            <EntityTypeMapping TypeName="GradersModel.InstituteReview">
+              <MappingFragment StoreEntitySet="InstituteReview">
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+                <ScalarProperty Name="InstituteId" ColumnName="InstituteId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Review" ColumnName="Review" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="DateOfReview" ColumnName="DateOfReview" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Location">
+            <EntityTypeMapping TypeName="GradersModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MultipleLocation">
+            <EntityTypeMapping TypeName="GradersModel.MultipleLocation">
+              <MappingFragment StoreEntitySet="MultipleLocation">
+                <ScalarProperty Name="MLocationId" ColumnName="MLocationId" />
+                <ScalarProperty Name="InstituteId" ColumnName="InstituteId" />
+                <ScalarProperty Name="FullAddress" ColumnName="FullAddress" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ratings">
+            <EntityTypeMapping TypeName="GradersModel.Ratings">
+              <MappingFragment StoreEntitySet="Ratings">
+                <ScalarProperty Name="RatingId" ColumnName="RatingId" />
+                <ScalarProperty Name="RatingName" ColumnName="RatingName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Setting">
+            <EntityTypeMapping TypeName="GradersModel.Setting">
+              <MappingFragment StoreEntitySet="Setting">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
